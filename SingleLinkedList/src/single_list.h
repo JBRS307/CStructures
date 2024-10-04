@@ -34,4 +34,7 @@ SingleLinkedListStatus single_list_push(SingleLinkedList* list, const void* data
 // Allows modification of data
 SingleLinkedListStatus single_list_at(const SingleLinkedList* list, size_t idx, void** data);
 
+// Inserts element before node at index idx. If idx >= list->size element is pushed at the end
+SingleLinkedListStatus single_list_insert(SingleLinkedList* list, size_t idx, const void* data);
+
 #endif
