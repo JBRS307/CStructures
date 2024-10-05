@@ -10,6 +10,15 @@ static void s_free_node(Node* node) {
     free(node);
 }
 
+static void s_free_all_nodes(SingleLinkedList* list) {
+    Node* curr = list->head;
+    while (curr->next) {
+        Node* to_free = curr;
+        curr = curr->next;
+        s_free_node(to_free);
+    }
+}
+
 //----------------------------INITIALIZATION-AND-DELETION----------------------------------------
 
 SingleLinkedList* single_list_init(size_t data_size) {
