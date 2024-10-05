@@ -71,6 +71,52 @@ SingleLinkedListStatus single_list_at(const SingleLinkedList* list, size_t idx, 
     return SUCCESS;
 }
 
+SingleLinkedListStatus single_list_max(const SingleLinkedList* list, void** data) {
+    if (!list->compar) {
+        return COMPARATOR_FUNCTION_MISSING;
+    }
+    if (!data) {
+        return NULL_DATA_POINTER;
+    }
+    if (list->size == 0) {
+        return LIST_EMPTY;
+    }
+
+    void* max_data = list->head->data;
+    Node* curr = list->head;
+    while (curr) {
+        if (list->compar(curr->data, max_data) > 0) {
+            max_data = curr->data;
+        }
+        curr = curr->next;
+    }
+    *data = max_data;
+    return SUCCESS;
+}
+
+SingleLinkedListStatus single_list_min(const SingleLinkedList* list, void** data) {
+    if (!list->compar) {
+        return COMPARATOR_FUNCTION_MISSING;
+    }
+    if (!data) {
+        return NULL_DATA_POINTER;
+    }
+    if (list->size == 0) {
+        return LIST_EMPTY;
+    }
+
+    void* min_data = list->head->data;
+    Node* curr = list->head;
+    while (curr) {
+        if (list->compar(curr->data, min_data) < 0) {
+            min_data = curr->data;
+        }
+        curr = curr->next;
+    }
+    *data = min_data;
+    return SUCCESS;
+}
+
 //--------------------ADDING-ELEMENTS-------------------------------------------
 
 SingleLinkedListStatus single_list_push(SingleLinkedList* list, const void* data) {

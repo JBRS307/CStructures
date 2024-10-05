@@ -8,6 +8,8 @@ typedef enum {
     MEMORY_ALLOCATION_ERROR,
     LIST_INDEX_OUT_OF_BOUNDS,
     LIST_EMPTY,
+    NULL_DATA_POINTER,
+    COMPARATOR_FUNCTION_MISSING,
 } SingleLinkedListStatus;
 
 typedef struct Node Node;
@@ -36,6 +38,12 @@ void single_list_free(SingleLinkedList* list);
 // Saves address pointed to by node at index idx into data
 // Allows modification of data
 SingleLinkedListStatus single_list_at(const SingleLinkedList* list, size_t idx, void** data);
+
+// Saves pointer to max element (according to list compar function) to data pointer
+SingleLinkedListStatus single_list_max(const SingleLinkedList* list, void** data);
+
+// Saves pointer to min element (according to list compar function) to data pointer
+SingleLinkedListStatus single_list_min(const SingleLinkedList* list, void** data);
 
 // Adds data to the end of the list. Copies at most data_size bytes
 // from memory pointed by data into the node at the end of the list
