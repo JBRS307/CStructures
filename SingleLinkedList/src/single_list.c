@@ -44,13 +44,7 @@ void single_list_free(SingleLinkedList* list) {
         return;
     }
 
-    Node* curr = list->head;
-    while (curr->next) {
-        Node* to_free = curr;
-        curr = curr->next;
-        s_free_node(to_free);
-    }
-    s_free_node(curr);
+    s_free_all_nodes(list);
     free(list);
 }
 
