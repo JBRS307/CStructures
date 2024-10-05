@@ -16,11 +16,14 @@ struct Node {
     Node* next;    
 };
 
+typedef int (*Comparator)(const void*, const void*);
+
 typedef struct {
     Node* head;
     Node* tail;
     size_t size;
     size_t data_size;
+    Comparator compar;
 } SingleLinkedList;
 
 // Dynamically initializes empty single linked list

@@ -33,6 +33,7 @@ SingleLinkedList* single_list_init(size_t data_size) {
 
     new->head = NULL;
     new->tail = NULL;
+    new->compar = NULL;
     new->size = 0;
     new->data_size = data_size;
     return new;
