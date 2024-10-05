@@ -3,6 +3,13 @@
 
 #include "single_list.h"
 
+//-------------------------------STATICS----------------------------------------------
+
+static void s_free_node(Node* node) {
+    free(node->data);
+    free(node);
+}
+
 //----------------------------INITIALIZATION-AND-DELETION----------------------------------------
 
 SingleLinkedList* single_list_init(size_t data_size) {
@@ -20,11 +27,6 @@ SingleLinkedList* single_list_init(size_t data_size) {
     new->size = 0;
     new->data_size = data_size;
     return new;
-}
-
-static void s_free_node(Node* node) {
-    free(node->data);
-    free(node);
 }
 
 void single_list_free(SingleLinkedList* list) {
