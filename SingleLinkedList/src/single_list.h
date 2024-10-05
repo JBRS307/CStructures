@@ -7,6 +7,7 @@ typedef enum {
     SUCCESS,
     MEMORY_ALLOCATION_ERROR,
     LIST_INDEX_OUT_OF_BOUNDS,
+    LIST_EMPTY,
 } SingleLinkedListStatus;
 
 typedef struct Node Node;
@@ -26,7 +27,7 @@ typedef struct {
 // with given data_size, returns NULL on error
 SingleLinkedList* single_list_init(size_t data_size);
 
-// Frees memory occupied by list and all its nodes
+// Frees memory occupied by dynamically allocated list and all its nodes
 void single_list_free(SingleLinkedList* list);
 
 // Saves address pointed to by node at index idx into data
@@ -39,5 +40,8 @@ SingleLinkedListStatus single_list_push(SingleLinkedList* list, const void* data
 
 // Inserts element before node at index idx. If idx >= list->size element is pushed at the end
 SingleLinkedListStatus single_list_insert(SingleLinkedList* list, size_t idx, const void* data);
+
+// Removes node, sets data pointed to by node to data
+SingleLinkedListStatus single_list_pop(SingleLinkedList* list, void** data);
 
 #endif

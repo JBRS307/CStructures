@@ -127,3 +127,37 @@ SingleLinkedListStatus single_list_insert(SingleLinkedList* list, size_t idx, co
 }
 
 //-------------------------REMOVING-ELEMENTS---------------------------------
+
+SingleLinkedListStatus single_list_pop(SingleLinkedList* list, void** data) {
+    if (list->size == 0) {
+        return LIST_EMPTY;
+    }
+
+    if (list->size == 1) {
+        if (data) {
+            *data = list->head->data;
+            free(list->head);
+        } else {
+            s_free_node(list->head);
+        }
+        list->head = list->tail = NULL;
+    } else {
+        Node* curr = list->head;
+        while (curr->next != list->tail) {
+            curr = curr->next;
+        }
+        Node* to_free = curr->next;
+        curr->next = NULL;
+        list->tail = curr;
+
+        if (data) {
+            *data = to_free->data;
+            free(to_free);        
+        } else {
+            s_free_node(to_free);
+        }
+    }
+    list->data_size--;
+    return SUCCESS;
+}
+
