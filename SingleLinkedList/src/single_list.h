@@ -49,4 +49,7 @@ SingleLinkedListStatus single_list_pop(SingleLinkedList* list, void** data);
 // If data is NULL node data is freed
 SingleLinkedListStatus single_list_remove(SingleLinkedList* list, size_t idx, void** data);
 
+// Clears list and frees all nodes, doesn't free list
+void single_list_clear(SingleLinkedList* list);
+
 #endif

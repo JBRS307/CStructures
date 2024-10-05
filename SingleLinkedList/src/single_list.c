@@ -210,3 +210,13 @@ SingleLinkedListStatus single_list_remove(SingleLinkedList* list, size_t idx, vo
     return SUCCESS;
 }
 
+void single_list_clear(SingleLinkedList* list) {
+    if (!list->head) {
+        return;
+    }
+
+    s_free_all_nodes(list);
+    list->size = 0;
+    list->head = list->tail = NULL;
+}
+
