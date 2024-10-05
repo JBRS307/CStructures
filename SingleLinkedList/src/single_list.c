@@ -3,6 +3,8 @@
 
 #include "single_list.h"
 
+//----------------------------INITIALIZATION-AND-DELETION----------------------------------------
+
 SingleLinkedList* single_list_init(size_t data_size) {
     if (data_size == 0) {
         return NULL;
@@ -19,6 +21,30 @@ SingleLinkedList* single_list_init(size_t data_size) {
     new->data_size = data_size;
     return new;
 }
+
+//-----------------------------------GETTING-ELEMENTS--------------------------------------------------
+
+SingleLinkedListStatus single_list_at(const SingleLinkedList* list, size_t idx, void** data) {
+    if (idx >= list->size) {
+        return LIST_INDEX_OUT_OF_BOUNDS;
+    }
+    if (idx == list->size - 1) {
+        *data = list->tail->data;
+        return SUCCESS;
+    }
+
+    Node* curr = list->head;
+    size_t i = 0;
+    while (i < idx) {
+        curr = curr->next;
+        i++;
+    }
+
+    *data = curr->data;
+    return SUCCESS;
+}
+
+//--------------------ADDING-ELEMENTS-------------------------------------------
 
 SingleLinkedListStatus single_list_push(SingleLinkedList* list, const void* data) {
     Node* new = (Node*)malloc(sizeof(Node));
@@ -42,26 +68,6 @@ SingleLinkedListStatus single_list_push(SingleLinkedList* list, const void* data
         list->tail = new;
     }
     list->size++;
-    return SUCCESS;
-}
-
-SingleLinkedListStatus single_list_at(const SingleLinkedList* list, size_t idx, void** data) {
-    if (idx >= list->size) {
-        return LIST_INDEX_OUT_OF_BOUNDS;
-    }
-    if (idx == list->size - 1) {
-        *data = list->tail->data;
-        return SUCCESS;
-    }
-
-    Node* curr = list->head;
-    size_t i = 0;
-    while (i < idx) {
-        curr = curr->next;
-        i++;
-    }
-
-    *data = curr->data;
     return SUCCESS;
 }
 
@@ -98,3 +104,5 @@ SingleLinkedListStatus single_list_insert(SingleLinkedList* list, size_t idx, co
     list->size++;
     return SUCCESS;
 }
+
+//-------------------------REMOVING-ELEMENTS---------------------------------
