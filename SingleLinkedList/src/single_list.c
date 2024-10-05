@@ -161,3 +161,47 @@ SingleLinkedListStatus single_list_pop(SingleLinkedList* list, void** data) {
     return SUCCESS;
 }
 
+SingleLinkedListStatus single_list_remove(SingleLinkedList* list, size_t idx, void** data) {
+    if (list->size == 0) {
+        return LIST_EMPTY;
+    }
+    if (idx >= list->size) {
+        return LIST_INDEX_OUT_OF_BOUNDS;
+    }
+
+    if (idx == list->size - 1 || list->size == 1) {
+        return single_list_pop(list, data);
+    }
+    
+    if (idx == 0) {
+        Node* to_free = list->head;
+        list->head = list->head->next;
+        
+        if (data) {
+            *data = to_free->data;
+            free(to_free);
+        } else {
+            s_free_node(to_free);
+        }
+    } else {
+        Node* prev = list->head;
+        Node* curr = prev->next;
+        size_t i = 1;
+        while (i < idx) {
+            prev = curr;
+            curr = curr->next;
+            i++;
+        }
+        prev->next = curr->next;
+
+        if (data) {
+            *data = curr->data;
+            free(curr);
+        } else {
+            s_free_node(curr);
+        }
+    }
+    list->size--;
+    return SUCCESS;
+}
+

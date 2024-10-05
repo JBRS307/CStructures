@@ -42,6 +42,11 @@ SingleLinkedListStatus single_list_push(SingleLinkedList* list, const void* data
 SingleLinkedListStatus single_list_insert(SingleLinkedList* list, size_t idx, const void* data);
 
 // Removes node, sets data pointed to by node to data
+// If data is NULL data at node is freed
 SingleLinkedListStatus single_list_pop(SingleLinkedList* list, void** data);
+
+// Removes element at given index, sets pointer to data.
+// If data is NULL node data is freed
+SingleLinkedListStatus single_list_remove(SingleLinkedList* list, size_t idx, void** data);
 
 #endif
