@@ -26,6 +26,9 @@ typedef struct {
 // with given data_size, returns NULL on error
 SingleLinkedList* single_list_init(size_t data_size);
 
+// Frees memory occupied by list and all its nodes
+void single_list_free(SingleLinkedList* list);
+
 // Saves address pointed to by node at index idx into data
 // Allows modification of data
 SingleLinkedListStatus single_list_at(const SingleLinkedList* list, size_t idx, void** data);

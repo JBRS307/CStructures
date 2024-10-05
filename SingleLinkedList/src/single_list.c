@@ -22,6 +22,27 @@ SingleLinkedList* single_list_init(size_t data_size) {
     return new;
 }
 
+static void s_free_node(Node* node) {
+    free(node->data);
+    free(node);
+}
+
+void single_list_free(SingleLinkedList* list) {
+    if (!list->head) {
+        free(list);
+        return;
+    }
+
+    Node* curr = list->head;
+    while (curr->next) {
+        Node* to_free = curr;
+        curr = curr->next;
+        s_free_node(to_free);
+    }
+    s_free_node(curr);
+    free(list);
+}
+
 //-----------------------------------GETTING-ELEMENTS--------------------------------------------------
 
 SingleLinkedListStatus single_list_at(const SingleLinkedList* list, size_t idx, void** data) {
