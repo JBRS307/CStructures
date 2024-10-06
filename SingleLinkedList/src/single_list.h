@@ -63,4 +63,7 @@ SingleLinkedListStatus single_list_remove(SingleLinkedList* list, size_t idx, vo
 // Clears list and frees all nodes, doesn't free list
 void single_list_clear(SingleLinkedList* list);
 
+// Reverses list in place
+SingleLinkedListStatus single_list_reverse(SingleLinkedList* list);
+
 #endif

@@ -267,3 +267,28 @@ void single_list_clear(SingleLinkedList* list) {
     list->head = list->tail = NULL;
 }
 
+//-----------------------MODIFY------------------------------------
+
+SingleLinkedListStatus single_list_reverse(SingleLinkedList* list) {
+    if (list->size == 0) {
+        return LIST_EMPTY;
+    }
+    if (list->size == 1) {
+        return SUCCESS;
+    }
+
+    Node* curr = list->head;
+    Node* prev = NULL;
+    Node* next = NULL;
+
+    list->tail = curr;
+    while (curr) {
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    list->head = prev;
+    return SUCCESS;
+}
+
