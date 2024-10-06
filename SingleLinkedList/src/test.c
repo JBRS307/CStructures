@@ -3,6 +3,16 @@
 
 #include "single_list.h"
 
+void print_int_list(const SingleLinkedList* list) {
+    Node* curr = list->head;
+    while (curr) {
+        int n = *(int*)curr->data;
+        printf("%d ", n);
+        curr = curr->next;
+    }
+    putchar('\n');
+}
+
 int main() {
     SingleLinkedList* list = single_list_init(sizeof(int));
 
@@ -12,16 +22,9 @@ int main() {
         }
     }
 
-    void* data;
-    if (single_list_at(list, 22, &data) != SUCCESS) {
-        fprintf(stderr, "Error in list!\n");
-    }
-
-    single_list_at(list, 3, &data);
-
-    int d = *(int*)data;
-
-    printf("%d\n", d);
+    print_int_list(list);
+    single_list_reverse(list);
+    print_int_list(list);
 
     return EXIT_SUCCESS;
 }
