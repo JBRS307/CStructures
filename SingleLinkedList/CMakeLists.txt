@@ -6,19 +6,21 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "DEBUG")
 endif()
 
-
-add_compile_options(-Wall -std=gnu17)
-
-add_library(singlelist STATIC src/single_list.c)
-
 if(${CMAKE_BUILD_TYPE} STREQUAL "RELEASE")
-    target_compile_options(singlelist PRIVATE -O3)
+    set(COMPILE_OPTIONS -O3)
+elseif(${CMAKE_BUILD_TYPE} STREQUAL "SANITIZE")
+    set(COMPILE_OPTIONS -g -Wextra -Wpedantic -fsanitize=address)
+    set(LINK_OPTIONS -fsanitize=address)
 else()
-    target_compile_options(singlelist PRIVATE -Wextra -Wpedantic -g)
+    set(COMPILE_OPTIONS -g -Wextra -Wpedantic)
 endif()
 
+
+add_compile_options(-Wall -std=gnu17 ${COMPILE_OPTIONS})
+add_link_options(${LINK_OPTIONS})
+
+add_library(singlelist STATIC src/single_list.c)
 add_executable(test src/test.c)
-target_compile_options(test PRIVATE -g)
 if (${CMAKE_BUILD_TYPE} STREQUAL "RELEASE")
     target_link_directories(test PRIVATE ${CMAKE_SOURCE_DIR}/lib)
 
