@@ -1,3 +1,3 @@
 #!/bin/bash
 
-rm -rf debug/ release/ test libsinglelist.a bin/ lib/
+rm -rf debug/ release/ sanitize/ test libsinglelist.a bin/ lib/
