@@ -362,8 +362,29 @@ static Node* merge(Node* A, Node* B, Comparator compar, int8_t order) {
     return start;
 }
 
-static Node* merge_blocks(Node** blocks, size_t n_blocks, Comparator compar, int8_t order, size_t step) {
-    // TODO
+static Node* merge_blocks(Node** blocks, size_t n_blocks, Comparator compar, int8_t order) {
+    bool merged = false;
+    do {
+        size_t block_idx = 0;
+        while (true) {
+            while (block_idx < n_blocks && !blocks[block_idx]) {
+                block_idx++;
+            }
+            size_t first_idx = block_idx++;
+            while (block_idx < n_blocks && !blocks[block_idx]) {
+                block_idx++;
+            }
+            if (block_idx < n_blocks) {
+                size_t second_idx = block_idx++;
+                blocks[first_idx] = merge(blocks[first_idx], blocks[second_idx], compar, order);
+                blocks[second_idx] = NULL;
+                merged = true;
+            } else {
+                break;
+            }
+        }
+    } while (merged);
+    return blocks[0];
 }
 
 // positive order means asc, negative means desc according to
@@ -394,7 +415,15 @@ static SingleLinkedListStatus sort(SingleLinkedList* list, int8_t order) {
     }
     sort_block(blocks[n_blocks - 1], list->size - (n_blocks - 1) * BLOCKSIZE, list->compar, order);
 
+    list->head = merge_blocks(blocks, n_blocks, list->compar, order);
+    curr = list->head;
+    while (curr) {
+        curr = curr->next;
+    }
+    list->tail = curr;
+
     free(blocks);
+    return SUCCESS;
 }
 
 SingleLinkedListStatus single_list_sort_asc(SingleLinkedList* list) {
@@ -408,4 +437,17 @@ SingleLinkedListStatus single_list_sort_asc(SingleLinkedList* list) {
         return SUCCESS;
     }
     return sort(list, 1);
+}
+
+SingleLinkedListStatus single_list_sort_desc(SingleLinkedList* list) {
+    if (!list->compar) {
+        return COMPARATOR_FUNCTION_MISSING;
+    }
+    if (list->size == 0) {
+        return LIST_EMPTY;
+    }
+    if (list->size == 1) {
+        return SUCCESS;
+    }
+    return sort(list, -1);
 }
