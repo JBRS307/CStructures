@@ -66,4 +66,10 @@ void single_list_clear(SingleLinkedList* list);
 // Reverses list in place
 SingleLinkedListStatus single_list_reverse(SingleLinkedList* list);
 
+// Sorts list in ascending order
+SingleLinkedListStatus single_list_sort_asc(SingleLinkedList* list);
+
+// Sorts list in descending order
+SingleLinkedListStatus single_list_sort_desc(SingleLinkedList* list);
+
 #endif
