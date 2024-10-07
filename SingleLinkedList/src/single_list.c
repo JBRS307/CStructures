@@ -18,6 +18,7 @@ static void s_free_all_nodes(SingleLinkedList* list) {
         curr = curr->next;
         s_free_node(to_free);
     }
+    s_free_node(curr);
 }
 
 //----------------------------INITIALIZATION-AND-DELETION----------------------------------------

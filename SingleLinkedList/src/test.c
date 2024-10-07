@@ -23,8 +23,10 @@ int main() {
     }
 
     print_int_list(list);
-    single_list_reverse(list);
-    print_int_list(list);
+    // single_list_reverse(list);
+    // print_int_list(list);
+
+    single_list_free(list);
 
     return EXIT_SUCCESS;
 }
