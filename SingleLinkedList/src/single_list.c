@@ -323,6 +323,49 @@ static void sort_block(Node* block, size_t block_size, Comparator compar, int8_t
     }
 }
 
+static Node* merge(Node* A, Node* B, Comparator compar, int8_t order) {
+    Node* start = NULL;
+    Node* curr = NULL;
+
+    if (order * compar(A->data, B->data) <= 0) {
+        start = A;
+        A = A->next;
+    } else {
+        start = B;
+        B = B->next;
+    }
+
+    curr = start;
+    while (A && B) {
+        if (order * compar(A->data, B->data) <= 0) {
+            curr->next = A;
+            A = A->next;
+        } else {
+            curr->next = B;
+            B = B->next;
+        }
+        curr = curr->next;
+    }
+
+    // Only one of these loops executes
+    while (A) {
+        curr->next = A;
+        A = A->next;
+        curr = curr->next;
+    }
+    while (B) {
+        curr->next = B;
+        B = B->next;
+        curr = curr->next;
+    }
+    curr->next = NULL;
+    return start;
+}
+
+static Node* merge_blocks(Node** blocks, size_t n_blocks, size_t last_size, Comparator compar, int8_t order, size_t step) {
+    // TODO 
+}
+
 // positive order means asc, negative means desc according to
 // comparator like used in qsort
 static SingleLinkedListStatus sort(SingleLinkedList* list, int8_t order) {
@@ -334,13 +377,16 @@ static SingleLinkedListStatus sort(SingleLinkedList* list, int8_t order) {
     }
 
     Node* curr = list->head;
-    size_t block_idx = 0;
-    while (curr) {
-        blocks[block_idx] = curr;
-        for (size_t i = 0; i < BLOCKSIZE; i++) {
+    for (size_t i = 0; i < n_blocks - 1; i++) {
+        blocks[i] = curr;
+        for (size_t j = 0; j < BLOCKSIZE - 1; j++) {
             curr = curr->next;
         }
+        Node* temp = curr->next;
+        curr->next = NULL;
+        curr = temp;
     }
+    blocks[n_blocks - 1] = curr;
 
     // Sort each block with bubble sort
     for (size_t i = 0; i < n_blocks - 1; i++) {
