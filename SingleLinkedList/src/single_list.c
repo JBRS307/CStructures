@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 
 #include "single_list.h"
@@ -292,3 +293,71 @@ SingleLinkedListStatus single_list_reverse(SingleLinkedList* list) {
     return SUCCESS;
 }
 
+
+#define BLOCKSIZE 32
+
+static void swap_data(void** a, void** b) {
+    void* temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+// order 1 means ascending sort, -1 means descending sort
+// Function sorts each block using bubble sort
+static void sort_block(Node* block, size_t block_size, Comparator compar, int8_t order) {
+    for (size_t i = 0; i < block_size - 1; i++) {
+        bool swapped = false;
+        Node* curr = block;
+        Node* next = curr->next;
+        for (size_t j = 0; j < block_size - i; j++) {
+            if (order * compar(curr->data, next->data) > 0) {
+                swap_data(&curr->data, &next->data);
+                swapped = true;
+            }
+            curr = next;
+            next = curr->next;
+        }
+        if (!swapped) {
+            return;
+        }
+    }
+}
+
+// positive order means asc, negative means desc according to
+// comparator like used in qsort
+static SingleLinkedListStatus sort(SingleLinkedList* list, int8_t order) {
+    // split list to ceil(size / BLOCKSIZE) blocks
+    size_t n_blocks = list->size / BLOCKSIZE + 1;
+    Node** blocks = (Node**)malloc((list->size / BLOCKSIZE + 1) * sizeof(Node*));
+    if (!blocks) {
+        return MEMORY_ALLOCATION_ERROR;
+    }
+
+    Node* curr = list->head;
+    size_t block_idx = 0;
+    while (curr) {
+        blocks[block_idx] = curr;
+        for (size_t i = 0; i < BLOCKSIZE; i++) {
+            curr = curr->next;
+        }
+    }
+
+    // Sort each block with bubble sort
+    for (size_t i = 0; i < n_blocks - 1; i++) {
+        sort_block(blocks[i], BLOCKSIZE, list->compar, order);
+    }
+    sort_block(blocks[n_blocks - 1], list->size - (n_blocks - 1) * BLOCKSIZE, list->compar, order);
+}
+
+SingleLinkedListStatus single_list_sort_asc(SingleLinkedList* list) {
+    if (!list->compar) {
+        return COMPARATOR_FUNCTION_MISSING;
+    }
+    if (list->size == 0) {
+        return LIST_EMPTY;
+    }
+    if (list->size == 1) {
+        return SUCCESS;
+    }
+    return sort(list, 1);
+}
