@@ -362,8 +362,8 @@ static Node* merge(Node* A, Node* B, Comparator compar, int8_t order) {
     return start;
 }
 
-static Node* merge_blocks(Node** blocks, size_t n_blocks, size_t last_size, Comparator compar, int8_t order, size_t step) {
-    // TODO 
+static Node* merge_blocks(Node** blocks, size_t n_blocks, Comparator compar, int8_t order, size_t step) {
+    // TODO
 }
 
 // positive order means asc, negative means desc according to
@@ -393,6 +393,8 @@ static SingleLinkedListStatus sort(SingleLinkedList* list, int8_t order) {
         sort_block(blocks[i], BLOCKSIZE, list->compar, order);
     }
     sort_block(blocks[n_blocks - 1], list->size - (n_blocks - 1) * BLOCKSIZE, list->compar, order);
+
+    free(blocks);
 }
 
 SingleLinkedListStatus single_list_sort_asc(SingleLinkedList* list) {
