@@ -310,7 +310,7 @@ static void sort_block(Node* block, size_t block_size, Comparator compar, int8_t
         bool swapped = false;
         Node* curr = block;
         Node* next = curr->next;
-        for (size_t j = 0; j < block_size - i; j++) {
+        for (size_t j = 0; j < block_size - 1 - i; j++) {
             if (order * compar(curr->data, next->data) > 0) {
                 swap_data(&curr->data, &next->data);
                 swapped = true;
@@ -367,6 +367,7 @@ static Node* merge_blocks(Node** blocks, size_t n_blocks, Comparator compar, int
     bool merged = false;
     do {
         size_t block_idx = 0;
+        merged = false;
         while (true) {
             while (block_idx < n_blocks && !blocks[block_idx]) {
                 block_idx++;
