@@ -57,6 +57,9 @@ SingleLinkedListStatus single_list_at(const SingleLinkedList* list, size_t idx, 
     if (idx >= list->size) {
         return LIST_INDEX_OUT_OF_BOUNDS;
     }
+    if (!data) {
+        return NULL_DATA_POINTER;
+    }
     if (idx == list->size - 1) {
         *data = list->tail->data;
         return SUCCESS;
