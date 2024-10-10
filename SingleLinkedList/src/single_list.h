@@ -72,4 +72,7 @@ SingleLinkedListStatus single_list_sort_asc(SingleLinkedList* list);
 // Sorts list in descending order
 SingleLinkedListStatus single_list_sort_desc(SingleLinkedList* list);
 
+// Returns message corresponding to error code
+const char* single_list_error(SingleLinkedListStatus error_code);
+
 #endif

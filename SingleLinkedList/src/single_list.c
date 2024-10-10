@@ -453,3 +453,22 @@ SingleLinkedListStatus single_list_sort_desc(SingleLinkedList* list) {
     }
     return sort(list, -1);
 }
+
+//----------------------------MISC------------------------------
+
+const char* single_list_error(SingleLinkedListStatus error_code) {
+    switch (error_code) {
+        case SUCCESS:
+            return "Success";
+        case MEMORY_ALLOCATION_ERROR:
+            return "Memory allocation error";
+        case LIST_INDEX_OUT_OF_BOUNDS:
+            return "List index out of bounds";
+        case LIST_EMPTY:
+            return "List is empty";
+        case NULL_DATA_POINTER:
+            return "data argument points to NULL";
+        case COMPARATOR_FUNCTION_MISSING:
+            return "Comparator function is not defined";
+    }
+}
