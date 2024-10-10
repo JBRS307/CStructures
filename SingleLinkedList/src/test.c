@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <assert.h>
 
 #include "single_list.h"
+
+#define SEED 42
 
 void print_int_list(const SingleLinkedList* list) {
     Node* curr = list->head;
@@ -14,33 +16,41 @@ void print_int_list(const SingleLinkedList* list) {
     putchar('\n');
 }
 
-int compare_int(const void* p1, const void* p2) {
-    int a = *(int*)p1;
-    int b = *(int*)p2;
+void test_dynamic_allocation_and_free() {
 
-    return a - b;
-} 
-
-int main() {
-    srand(time(NULL));
-    SingleLinkedList* list = single_list_init(sizeof(int));
-    list->compar = compare_int;
-
-    for (int i = 1; i <= 130; i++) {
-        int elem = rand() % 20 + 1;
-        if (single_list_push(list, (void*)&elem) != SUCCESS) {
-            exit(EXIT_FAILURE);
-        }
-    }
-
-    print_int_list(list);
-    
-    if (single_list_sort_desc(list) != SUCCESS) {
-        exit(EXIT_FAILURE);
-    }
-    print_int_list(list);
+    SingleLinkedList* list = single_list_init(1);
+    assert(list != NULL && "test_dynamic_allocation_and_free failed: list is NULL");
 
     single_list_free(list);
+    printf("test_dynamic_allocation_and_free successful!\n");
+}
 
+void test_push_and_at() {
+    SingleLinkedListStatus status;
+    SingleLinkedList list = {0}; // Allocating statically to make things easier
+    list.data_size = sizeof(int);
+
+    for (int i = 0; i < 20; i++) {
+        status = single_list_push(&list, (void*)&i);
+        assert(status == SUCCESS && "test_push_and_at failed: error pushing element");
+    }
+
+    int num;
+    void* data;
+    status = single_list_at(&list, 5, &data);
+    num = *(int*)data;
+    assert(status == SUCCESS && "test_push_at failed: error getting element!");
+    assert(num == 5 && "test_push_at failed: wrong element!");
+
+    status = single_list_at(&list, 100, &data);
+    assert(status == LIST_INDEX_OUT_OF_BOUNDS && "test_push_and_at failed: wrong error code returned!");
+
+    printf("test_push_and_at successful!\n");
+}
+
+
+int main() {
+    
+    
     return EXIT_SUCCESS;
 }
