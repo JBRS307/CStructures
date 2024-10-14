@@ -5,7 +5,19 @@
 #include <stddef.h>
 #include <pthread.h>
 
+typedef enum {
+    SUCCESS,
+    MEMORY_ALLOCATION_ERROR,
+    BUILTIN_ERROR,
+} ThreadPoolError;
+
 typedef void (*ThreadFunc)(void* arg);
+
+// Returns most recent error number
+ThreadPoolError thread_pool_errno();
+
+// Returns message of most recent error
+const char* thread_pool_error();
 
 typedef struct ThreadPoolWorker ThreadPoolWorker;
 struct ThreadPoolWorker {
@@ -24,5 +36,9 @@ typedef struct {
     size_t working_threads;
     bool stop;
 } ThreadPool;
+
+// Dynamically initializes ThreadPool with n threads
+ThreadPool* thread_pool_create(size_t n);
+
 
 #endif
